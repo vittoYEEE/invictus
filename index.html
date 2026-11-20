@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invictus — Class Archive</title>
+    <link rel="stylesheet" href="./output.css" />
+    <style>
+      /* Layer transisi langsung dari Members ke Galeri di dalam 1 stage */
+      #jelajahi {
+        height: 680vh;
+      }
+
+      #morphHeroPhoto,
+      #galeriTilesLayer,
+      #galeriHeaderContainer {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #morphHeroPhoto {
+        z-index: 34;
+      }
+
+      #galeriTilesLayer {
+        z-index: 35;
+      }
+
+      #galeriHeaderContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 40;
+      }
+
+      #galeriTilesLayer.is-active article {
+        pointer-events: auto;
+        cursor: pointer;
+      }
+
+      #galeriTilesLayer.is-active article:hover .galeri-tile-img {
+        transform: scale(1.04);
+      }
+
+      .galeri-tile-img {
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      #galeriFilterBar.is-active {
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[#0a0a0b] font-sans text-white antialiased selection:bg-white selection:text-neutral-950"
+  >
+    <!-- ===================================================================
+         1. NAVBAR (BERUBAH JADI GLASS PILL HITAM ROUNDED-100 SAAT SCROLL)
+         =================================================================== -->
+    <header
+      class="fixed top-0 inset-x-0 z-50 px-4 pt-4 sm:px-8 sm:pt-5 pointer-events-none"
+    >
+      <div
+        id="navContainer"
+        class="pointer-events-auto mx-auto w-full max-w-7xl transition-all duration-500 ease-out"
+      >
+        <nav
+          id="mainNav"
+          aria-label="Navigasi Utama"
+          class="flex w-full items-center justify-between rounded-[100px] border border-transparent bg-transparent px-4 py-2.5 transition-all duration-500 ease-out"
+        >
+          <!-- Brand Logo -->
+          <a href="#home" class="pl-2">
+            <span
+              class="text-xs sm:text-sm font-bold tracking-[0.32em] text-white uppercase select-none"
+            >
+              INVICTUS
+            </span>
+          </a>
+
+          <!-- Tombol Hamburger (Tampil di Semua Ukuran Layar) -->
+          <button
+            type="button"
+            id="menuToggleBtn"
+            aria-label="Buka Menu Navigasi"
+            aria-expanded="false"
+            aria-controls="navMenuPanel"
+            class="flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1 rounded-full border border-white/25 bg-black/30 backdrop-blur-md transition hover:border-white/50 hover:bg-white/15"
+          >
+            <span
+              id="barTop"
+              class="block h-0.5 w-5 rounded-full bg-white transition-all duration-300"
+            ></span>
+            <span
+              id="barMid"
+              class="block h-0.5 w-5 rounded-full bg-white transition-all duration-300"
+            ></span>
+            <span
+              id="barBot"
+              class="block h-0.5 w-5 rounded-full bg-white transition-all duration-300"
+            ></span>
+          </button>
+        </nav>
+
+        <!-- Dropdown Menu Panel -->
+        <div
+          id="navMenuPanel"
+          class="pointer-events-none mt-2.5 origin-top scale-95 opacity-0 rounded-3xl border border-white/15 bg-black/85 p-3 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.75)] transition-all duration-300 ease-out"
+        >
+          <div class="flex flex-col gap-1.5">
+            <a
+              href="#home"
+              data-nav-target="home"
+              class="nav-menu-link flex items-center justify-between rounded-2xl bg-white px-4 py-2.5 text-xs font-semibold text-neutral-950 transition"
+            >
+              <span>Home</span>
+              <span class="font-mono text-[10px] opacity-60">00</span>
+            </a>
+            <a
+              href="#about"
+              data-nav-target="about"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>About</span>
+              <span class="font-mono text-[10px] text-neutral-500">01</span>
+            </a>
+            <a
+              href="#members"
+              data-nav-target="members"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>Members</span>
+              <span class="font-mono text-[10px] text-neutral-500">02</span>
+            </a>
+            <a
+              href="#gallery"
+              data-nav-target="gallery"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>Gallery</span>
+              <span class="font-mono text-[10px] text-neutral-500">03</span>
+            </a>
+            <a
+              href="#timeline"
+              data-nav-target="timeline"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>Timeline</span>
+              <span class="font-mono text-[10px] text-neutral-500">04</span>
+            </a>
+            <a
+              href="#wall"
+              data-nav-target="wall"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>Wall</span>
+              <span class="font-mono text-[10px] text-neutral-500">05</span>
+            </a>
+            <a
+              href="#piket"
+              data-nav-target="piket"
+              class="nav-menu-link flex items-center justify-between rounded-2xl px-4 py-2.5 text-xs font-medium text-white/90 transition hover:bg-white/10"
+            >
+              <span>Jadwal Piket</span>
+              <span class="font-mono text-[10px] text-neutral-500">06</span>
+            </a>
+            <a
+              href="./admin.html"
+              class="nav-admin-link"
+            >
+              <span>Admin Panel</span>
+              <span class="font-mono text-[10px]">ADMIN &nearr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         2. PANEL 1: HERO SECTION (STICKY 1 LAYAR PENUH DI BELAKANG SAAT SCROLL)
+         =================================================================== -->
+    <section id="home" class="sticky top-0 z-0 h-screen w-full overflow-hidden">
+      <div
+        id="heroStackContent"
+        class="relative flex h-full w-full flex-col justify-between pt-20 will-change-transform"
+      >
+        <!-- Background Foto Angkatan -->
+        <img
+          src="./asset/DSC08675.JPG"
+          onerror="
+            this.onerror = null;
+            this.src =
+              'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=85';
+          "
+          alt="Foto Kebersamaan Angkatan Invictus"
+          class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        />
+        <!-- Overlay Gelap -->
+        <div
+          class="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/35 to-black/80"
+        ></div>
+
+        <!-- JUDUL HERO TENGAH-KIRI -->
+        <div
+          class="relative z-10 mx-auto my-auto w-full max-w-7xl px-6 py-12 sm:px-10"
+        >
+          <h1 class="select-none">
+            <span
+              class="block text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white"
+            >
+              Capture <span class="font-light text-white/95">the</span>
+            </span>
+            <span
+              class="font-script -mt-3 sm:-mt-5 block text-6xl sm:text-8xl md:text-[7.5rem] leading-none text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)]"
+            >
+              Moment
+            </span>
+          </h1>
+        </div>
+
+        <!-- FOOTER HERO: KUTIPAN KIRI & TOMBOL KANAN -->
+        <div
+          class="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 pb-10 sm:flex-row sm:items-end sm:justify-between sm:px-10"
+        >
+          <p
+            class="max-w-xs text-xs sm:text-sm leading-relaxed font-medium text-white/90"
+          >
+            “Sampai kita sadar bahwa lengkap itu bukan soal jumlah, tapi ikatan
+            yang tetap kuat”
+          </p>
+
+          <button
+            type="button"
+            id="untilWhenBtn"
+            aria-label="Gulir ke bagian About Invictus"
+            class="w-fit cursor-pointer rounded-full border border-white/35 bg-black/30 px-6 py-2 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white hover:text-neutral-950"
+          >
+            Until when?
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3. PANEL 2: LAPISAN BERTUMPUK (TAGLINE + ABOUT -> MEMBERS -> GALERI)
+         =================================================================== -->
+    <div
+      id="jelajahiStack"
+      class="relative z-10 rounded-t-[28px] sm:rounded-t-[40px] bg-[#FFFFFF] shadow-[0_-24px_60px_rgba(0,0,0,0.85)]"
+    >
+      <!-- TAGLINE STRIP (INFINITE MARQUEE UJUNG KE UJUNG) -->
+      <div
+        class="overflow-hidden rounded-t-[28px] sm:rounded-t-[40px] select-none border-b border-white/10 bg-[#0e0e10] py-4"
+      >
+        <div
+          id="taglineMarqueeTrack"
+          class="flex w-max items-center will-change-transform"
+        >
+          <!-- Grup 1 -->
+          <div
+            data-marquee-group
+            class="flex shrink-0 items-center gap-8 pr-8 text-[10px] sm:text-xs font-medium tracking-[0.3em] text-neutral-400 uppercase"
+          >
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+          </div>
+
+          <!-- Grup 2 -->
+          <div
+            aria-hidden="true"
+            class="flex shrink-0 items-center gap-8 pr-8 text-[10px] sm:text-xs font-medium tracking-[0.3em] text-neutral-400 uppercase"
+          >
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNCONQUERABLE</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNITED</span>
+            <span class="text-white/35">&bull;</span>
+            <span>UNSTOPPABLE</span>
+            <span class="text-white/35">&bull;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           WRAPPER SCROLL-SCRUBBED TUNGGAL: ABOUT -> MEMBERS -> GALERI
+           ================================================================= -->
+      <section
+        id="jelajahi"
+        aria-label="About, Anggota, dan Galeri Invictus"
+        class="relative w-full bg-[#FFFFFF] text-neutral-950"
+      >
+        <!-- Jangkar navigasi #about, #members, dan #gallery -->
+        <div
+          id="about"
+          aria-hidden="true"
+          style="top: 0; height: 100vh"
+          class="pointer-events-none absolute inset-x-0"
+        ></div>
+        <div
+          id="members"
+          aria-hidden="true"
+          style="top: 34%; height: 100vh"
+          class="pointer-events-none absolute inset-x-0"
+        ></div>
+        <div
+          id="gallery"
+          aria-hidden="true"
+          style="top: 86%; height: 100vh"
+          class="pointer-events-none absolute inset-x-0"
+        ></div>
+
+        <!-- PANGGUNG STICKY 1 LAYAR PENUH (h-screen) -->
+        <div
+          id="stickyStage"
+          class="sticky top-0 h-screen overflow-hidden w-full bg-[#FFFFFF]"
+        >
+          <!-- Indikator Section Pojok Kanan Atas (001 ABOUT -> 002 ANGGOTA -> 003 GALERI) -->
+          <div
+            class="pointer-events-none absolute top-20 right-6 z-50 h-5 w-44 text-right text-white mix-blend-difference sm:right-10"
+          >
+            <span
+              id="navLabelAbout"
+              class="absolute right-0 top-0 text-[11px] font-medium uppercase tracking-[0.24em] will-change-transform"
+            >
+              001 &middot; ABOUT
+            </span>
+            <span
+              id="navLabelAnggota"
+              class="absolute right-0 top-0 text-[11px] font-medium uppercase tracking-[0.24em] opacity-0 will-change-transform"
+            >
+              002 &middot; ANGGOTA
+            </span>
+            <span
+              id="navLabelGaleri"
+              class="absolute right-0 top-0 text-[11px] font-medium uppercase tracking-[0.24em] opacity-0 will-change-transform"
+            >
+              003 &middot; GALERI
+            </span>
+          </div>
+
+          <!-- =============================================================
+               TAHAP 1: SECTION ABOUT (LATAR PUTIH + FOTO MEMBESAR)
+               ============================================================= -->
+          <div
+            id="aboutStageLayer"
+            class="relative flex h-screen w-full items-center bg-[#FFFFFF] px-6 py-16 sm:px-10"
+          >
+            <div
+              class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12"
+            >
+              <!-- Kolom Kiri: Slot Jangkar Posisi Asli Foto -->
+              <div class="w-full">
+                <div
+                  id="photoSlot"
+                  class="aspect-[4/3] w-full rounded-[32px]"
+                ></div>
+              </div>
+
+              <!-- Kolom Kanan: Konten Teks About -->
+              <div
+                id="aboutTextCol"
+                class="flex flex-col items-start will-change-transform"
+              >
+                <span
+                  class="inline-flex items-center rounded-full border border-neutral-300 bg-neutral-50 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-600"
+                >
+                  001 &bull; ABOUT
+                </span>
+
+                <h2
+                  class="mt-4 flex flex-wrap items-baseline gap-x-3 text-4xl font-bold tracking-tight text-neutral-950 sm:text-5xl lg:text-6xl"
+                >
+                  <span>About</span>
+                  <span
+                    class="font-script text-6xl font-normal leading-none text-neutral-950 sm:text-7xl lg:text-8xl"
+                  >
+                    Invictus
+                  </span>
+                </h2>
+
+                <p class="mt-4 text-base text-neutral-800 sm:text-lg">
+                  Invictus berarti
+                  <strong class="font-bold text-neutral-950"
+                    >tak terkalahkan</strong
+                  >.
+                </p>
+
+                <p
+                  class="mt-3 text-xs leading-relaxed text-neutral-500 sm:text-sm"
+                >
+                  [Tulis cerita dan filosofi angkatan di sini]
+                </p>
+
+                <div class="my-5 h-px w-full bg-neutral-200"></div>
+
+                <blockquote
+                  class="text-xs leading-relaxed text-neutral-700 sm:text-sm"
+                >
+                  “Sampai kita sadar bahwa
+                  <strong class="font-bold text-neutral-950">lengkap</strong>
+                  itu bukan soal jumlah, tapi
+                  <strong class="font-bold text-neutral-950">ikatan</strong>
+                  yang tetap kuat”
+                </blockquote>
+              </div>
+            </div>
+
+            <!-- Foto Angkatan (Membesar Memenuhi Layar & Menggelap) -->
+            <div
+              id="expandingPhotoBox"
+              class="pointer-events-none absolute z-10 overflow-hidden rounded-[32px] bg-neutral-900 will-change-transform"
+            >
+              <img
+                id="expandingPhotoImg"
+                src="./asset/DSC08675.JPG"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=85';
+                "
+                alt="Foto Kebersamaan Angkatan Invictus"
+                class="h-full w-full object-cover object-center will-change-transform"
+              />
+            </div>
+          </div>
+
+          <!-- PETUNJUK SCROLL ↓ -->
+          <div
+            id="scrollCue"
+            class="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-500 will-change-transform"
+          >
+            SCROLL &darr;
+          </div>
+
+          <!-- =============================================================
+               TAHAP 2: KARTU PUTIH ANGGOTA — SEMUA 33 CARD TERPANDANG SEKALIGUS
+               ============================================================= -->
+          <div
+            id="anggotaCard"
+            class="absolute inset-x-[3vw] top-[3.5vh] bottom-[3.5vh] z-30 flex flex-col justify-between overflow-hidden rounded-[36px] sm:rounded-[44px] bg-white px-5 py-5 shadow-2xl will-change-transform sm:px-8 sm:py-6"
+          >
+            <!-- Header Section Anggota -->
+            <div
+              id="membersHeader"
+              class="flex shrink-0 flex-col items-center text-center will-change-transform"
+            >
+              <span
+                id="anggotaPill"
+                class="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-500 will-change-transform"
+              >
+                002 &bull; ANGGOTA
+              </span>
+
+              <h2
+                class="mt-2 flex flex-wrap items-center justify-center gap-x-2 text-xl font-bold tracking-tight text-neutral-950 sm:text-3xl lg:text-4xl"
+              >
+                <span class="inline-block overflow-hidden pb-0.5">
+                  <span
+                    data-title-word
+                    class="inline-block will-change-transform"
+                    >Meet</span
+                  >
+                </span>
+                <span class="inline-block overflow-hidden pb-0.5">
+                  <span
+                    data-title-word
+                    class="inline-block will-change-transform"
+                    >the</span
+                  >
+                </span>
+                <span class="inline-block overflow-hidden pb-0.5">
+                  <span
+                    data-title-word
+                    class="inline-block will-change-transform"
+                    >Invictus</span
+                  >
+                </span>
+                <span class="inline-block overflow-hidden pb-0.5">
+                  <span
+                    data-title-word
+                    class="inline-block will-change-transform"
+                    >Minds</span
+                  >
+                </span>
+              </h2>
+
+              <p class="mt-1 text-[11px] font-medium text-neutral-400">
+                33 Anggota &bull; Klik kartu untuk melihat profil atau mengganti
+                foto
+              </p>
+            </div>
+
+            <!-- Grid Semua 33 Kartu Anggota (11 Kolom x 3 Baris = 33 Card Terpandang Semua) -->
+            <div
+              id="membersGridWrapper"
+              class="my-auto flex w-full flex-1 items-center overflow-y-auto py-2"
+            >
+              <div
+                id="membersGrid"
+                class="mx-auto grid w-full max-w-7xl grid-cols-3 gap-x-2.5 gap-y-3 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-11 lg:gap-x-3 lg:gap-y-3.5"
+              >
+                <!-- 33 Kartu Anggota dirender otomatis oleh script.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- =============================================================
+               TAHAP 3: GALERI MOMEN (HEADER + FILTER + 6 KEPING FOTO)
+               ============================================================= -->
+          <div
+            id="morphHeroPhoto"
+            aria-hidden="true"
+            class="pointer-events-none absolute overflow-hidden bg-neutral-900 bg-no-repeat will-change-transform"
+          ></div>
+
+          <div
+            id="galeriTilesLayer"
+            class="pointer-events-none absolute inset-0"
+          ></div>
+
+          <div
+            id="galeriHeaderContainer"
+            class="pointer-events-none absolute inset-x-0 top-0 mx-auto flex w-full max-w-6xl flex-col items-center px-6 pt-16 text-center sm:pt-20"
+          >
+            <span
+              id="galeriPill"
+              class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3.5 py-1 text-[11px] font-semibold tracking-[0.2em] text-neutral-300 uppercase opacity-0 backdrop-blur-md will-change-transform"
+            >
+              003 &bull; GALERI
+            </span>
+
+            <h2
+              class="mt-2.5 flex flex-wrap items-baseline justify-center gap-x-3 text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
+            >
+              <span class="inline-block overflow-hidden pb-1">
+                <span
+                  data-galeri-word
+                  class="inline-block will-change-transform"
+                  style="transform: translate3d(0, 110%, 0)"
+                >
+                  Galeri
+                </span>
+              </span>
+              <span class="inline-block overflow-hidden pb-1">
+                <span
+                  data-galeri-word
+                  class="inline-block font-script text-5xl font-normal leading-none text-white sm:text-7xl lg:text-8xl will-change-transform"
+                  style="transform: translate3d(0, 110%, 0)"
+                >
+                  Momen
+                </span>
+              </span>
+            </h2>
+
+            <!-- Filter Pills: Semua / Acara / Kelas / Momen -->
+            <div
+              id="galeriFilterBar"
+              role="group"
+              aria-label="Filter kategori galeri"
+              class="pointer-events-none mt-4 flex flex-wrap items-center justify-center gap-2 opacity-0 will-change-transform"
+            >
+              <button
+                type="button"
+                data-filter="Semua"
+                aria-pressed="true"
+                class="galeri-filter-btn min-h-[44px] min-w-[44px] cursor-pointer rounded-full bg-white px-5 py-2 text-xs font-semibold text-neutral-950 transition"
+              >
+                Semua
+              </button>
+              <button
+                type="button"
+                data-filter="Acara"
+                aria-pressed="false"
+                class="galeri-filter-btn min-h-[44px] min-w-[44px] cursor-pointer rounded-full border border-white/15 bg-white/10 px-5 py-2 text-xs font-medium text-white/85 backdrop-blur-md transition hover:bg-white/20"
+              >
+                Acara
+              </button>
+              <button
+                type="button"
+                data-filter="Kelas"
+                aria-pressed="false"
+                class="galeri-filter-btn min-h-[44px] min-w-[44px] cursor-pointer rounded-full border border-white/15 bg-white/10 px-5 py-2 text-xs font-medium text-white/85 backdrop-blur-md transition hover:bg-white/20"
+              >
+                Kelas
+              </button>
+              <button
+                type="button"
+                data-filter="Momen"
+                aria-pressed="false"
+                class="galeri-filter-btn min-h-[44px] min-w-[44px] cursor-pointer rounded-full border border-white/15 bg-white/10 px-5 py-2 text-xs font-medium text-white/85 backdrop-blur-md transition hover:bg-white/20"
+              >
+                Momen
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================
+         4. SECTION JADWAL PIKET KELAS (DIKONTROL LEWAT PANEL ADMIN)
+         =================================================================== -->
+    <section id="piket" aria-label="Jadwal Piket Kelas Invictus">
+      <div class="piket-container">
+        <div class="piket-header">
+          <span class="piket-pill">004 &bull; JADWAL PIKET</span>
+          <h2 class="piket-title">Jadwal Piket Kelas</h2>
+          <p id="piketNoteDisplay" class="piket-note-banner">
+            Piket dilaksanakan pukul 06.45 WIB sebelum jam pelajaran pertama dimulai.
+          </p>
+        </div>
+
+        <div class="piket-controls-row">
+          <div id="piketDayFilterBar" class="piket-day-tabs" role="tablist">
+            <!-- Tombol filter hari dirender otomatis oleh script.js -->
+          </div>
+
+          <a href="./admin.html" class="piket-admin-shortcut">
+            <span>Kelola di Admin Panel</span>
+            <span>&nearr;</span>
+          </a>
+        </div>
+
+        <div id="piketCardsGrid" class="piket-grid">
+          <!-- Kartu jadwal piket Senin - Sabtu dirender otomatis oleh script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         4. MODAL POPUP DETAIL PROFIL ANGGOTA (MUNCUL SAAT CARD DIKLIK)
+         =================================================================== -->
+    <div
+      id="memberModalBackdrop"
+      class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300"
+    >
+      <div
+        id="memberModalCard"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalMemberName"
+        class="relative w-full max-w-2xl scale-95 overflow-hidden rounded-[36px] border border-neutral-200 bg-white text-neutral-950 opacity-0 shadow-2xl transition-all duration-300 ease-out"
+      >
+        <!-- Tombol Tutup Modal -->
+        <button
+          type="button"
+          id="closeMemberModalBtn"
+          aria-label="Tutup profil anggota"
+          class="absolute top-4 right-4 z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-neutral-200 bg-white/90 text-neutral-800 backdrop-blur-md transition hover:bg-neutral-950 hover:text-white"
+        >
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12">
+          <!-- Kolom Foto Anggota + Tombol Ganti Foto -->
+          <div
+            class="relative h-72 w-full overflow-hidden bg-neutral-100 sm:col-span-5 sm:h-full sm:min-h-[410px]"
+          >
+            <img
+              id="modalMemberPhoto"
+              src=""
+              alt="Foto Anggota"
+              class="h-full w-full object-cover object-center"
+            />
+            <input
+              type="file"
+              id="memberPhotoFileInput"
+              accept="image/*"
+              class="hidden"
+            />
+            <div
+              class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4"
+            >
+              <span
+                id="modalMemberBadge"
+                class="inline-flex items-center rounded-full border border-white/25 bg-black/40 px-3 py-1 font-mono text-[10px] font-semibold tracking-[0.2em] text-white uppercase backdrop-blur-md"
+              >
+                INVICTUS &bull; #01
+              </span>
+
+              <div class="pointer-events-auto flex items-center gap-1.5">
+                <button
+                  type="button"
+                  id="resetMemberPhotoBtn"
+                  title="Kembalikan foto awal"
+                  class="hidden cursor-pointer rounded-full border border-white/25 bg-black/55 px-2.5 py-1 text-[10px] font-semibold text-white/90 backdrop-blur-md transition hover:bg-red-500 hover:text-white"
+                >
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  id="changeMemberPhotoBtn"
+                  class="cursor-pointer rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[10px] font-semibold text-neutral-950 shadow-sm backdrop-blur-md transition hover:bg-white"
+                >
+                  Ganti Foto
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Biodata & Sosial Media -->
+          <div class="flex flex-col justify-between p-6 sm:col-span-7 sm:p-8">
+            <div>
+              <span
+                class="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-500"
+              >
+                002 &bull; PROFIL ANGGOTA
+              </span>
+
+              <!-- Nama -->
+              <h3
+                id="modalMemberName"
+                class="mt-3 text-2xl font-bold tracking-tight text-neutral-950 sm:text-3xl"
+              >
+                [Nama Anggota]
+              </h3>
+
+              <!-- Jabatan -->
+              <p
+                id="modalMemberRole"
+                class="mt-1 text-xs font-medium text-neutral-500"
+              >
+                [Jabatan]
+              </p>
+
+              <!-- Moto Anggota -->
+              <div class="member-motto-box">
+                <span class="member-motto-label">Moto</span>
+                <span id="modalMemberMotto">“Tak terkalahkan bersama Invictus.”</span>
+              </div>
+
+              <!-- Tanggal Lahir & Umur -->
+              <div class="mt-5 grid grid-cols-2 gap-3">
+                <div
+                  class="rounded-2xl border border-neutral-200 bg-neutral-50 p-3"
+                >
+                  <span
+                    class="block text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-400"
+                  >
+                    Tanggal Lahir
+                  </span>
+                  <span
+                    id="modalMemberDob"
+                    class="mt-1 block text-xs font-semibold text-neutral-900 sm:text-sm"
+                  >
+                    12 Agustus 2008
+                  </span>
+                </div>
+
+                <div
+                  class="rounded-2xl border border-neutral-200 bg-neutral-50 p-3"
+                >
+                  <span
+                    class="block text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-400"
+                  >
+                    Umur
+                  </span>
+                  <span
+                    id="modalMemberAge"
+                    class="mt-1 block text-xs font-semibold text-neutral-900 sm:text-sm"
+                  >
+                    18 Tahun
+                  </span>
+                </div>
+              </div>
+
+              <div class="my-5 h-px w-full bg-neutral-200"></div>
+
+              <!-- Tautan Website Portfolio, LinkedIn, Instagram -->
+              <div class="flex flex-col gap-2">
+                <!-- Website Portfolio -->
+                <a
+                  id="modalMemberPortfolio"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-semibold text-neutral-900 transition hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
+                >
+                  <span class="flex items-center gap-2.5">
+                    <svg
+                      class="h-4 w-4 shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path
+                        d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                      />
+                    </svg>
+                    <span>Website Portfolio</span>
+                  </span>
+                  <span
+                    id="modalMemberPortfolioLabel"
+                    class="truncate pl-3 font-mono text-[11px] font-normal opacity-65"
+                  >
+                    portfolio.invictus.id
+                  </span>
+                </a>
+
+                <!-- LinkedIn -->
+                <a
+                  id="modalMemberLinkedin"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-semibold text-neutral-900 transition hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
+                >
+                  <span class="flex items-center gap-2.5">
+                    <svg
+                      class="h-4 w-4 shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
+                      />
+                    </svg>
+                    <span>LinkedIn</span>
+                  </span>
+                  <span
+                    id="modalMemberLinkedinLabel"
+                    class="truncate pl-3 font-mono text-[11px] font-normal opacity-65"
+                  >
+                    in/anggota
+                  </span>
+                </a>
+
+                <!-- Instagram -->
+                <a
+                  id="modalMemberIg"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-semibold text-neutral-900 transition hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
+                >
+                  <span class="flex items-center gap-2.5">
+                    <svg
+                      class="h-4 w-4 shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4a3.9 3.9 0 0 1-1.4-.9 3.9 3.9 0 0 1-.9-1.4c-.2-.4-.4-1.1-.4-2.2-.1-1.3-.1-1.6-.1-4.9s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1.1-.4 2.2-.4 1.3-.1 1.6-.1 4.9-.1zm0 3.4a6.4 6.4 0 1 0 0 12.8 6.4 6.4 0 0 0 0-12.8zm0 10.5a4.1 4.1 0 1 1 0-8.2 4.1 4.1 0 0 1 0 8.2zm6.7-12.3a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"
+                      />
+                    </svg>
+                    <span>Instagram</span>
+                  </span>
+                  <span
+                    id="modalMemberIgLabel"
+                    class="truncate pl-3 font-mono text-[11px] font-normal opacity-65"
+                  >
+                    @invictus.member
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Navigasi Sebelumnya / Berikutnya di dalam Modal -->
+            <div
+              class="mt-5 flex items-center justify-between border-t border-neutral-100 pt-4"
+            >
+              <button
+                type="button"
+                id="modalPrevBtn"
+                class="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-200 px-3.5 py-1.5 text-[11px] font-semibold text-neutral-700 transition hover:bg-neutral-950 hover:text-white"
+              >
+                <span>&larr;</span>
+                <span>Sebelumnya</span>
+              </button>
+
+              <span
+                id="modalCounterText"
+                class="font-mono text-[11px] text-neutral-400"
+              >
+                01 / 33
+              </span>
+
+              <button
+                type="button"
+                id="modalNextBtn"
+                class="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-200 px-3.5 py-1.5 text-[11px] font-semibold text-neutral-700 transition hover:bg-neutral-950 hover:text-white"
+              >
+                <span>Berikutnya</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         5. LIGHTBOX MODAL GALERI MOMEN (MUNCUL SAAT KEPING FOTO DIKLIK)
+         =================================================================== -->
+    <div
+      id="galleryLightboxBackdrop"
+      class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 opacity-0 backdrop-blur-xl transition-opacity duration-300"
+    >
+      <div
+        id="galleryLightboxCard"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lightboxTitle"
+        class="relative w-full max-w-4xl scale-95 overflow-hidden rounded-[32px] border border-white/15 bg-neutral-950 text-white opacity-0 shadow-2xl transition-all duration-300 ease-out"
+      >
+        <button
+          type="button"
+          id="closeLightboxBtn"
+          aria-label="Tutup pratinjau galeri"
+          class="absolute top-4 right-4 z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-md transition hover:bg-white hover:text-neutral-950"
+        >
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <div
+          class="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900"
+        >
+          <img
+            id="lightboxPhoto"
+            src=""
+            alt="Foto Momen Invictus"
+            class="h-full w-full object-cover object-center"
+          />
+        </div>
+
+        <div
+          class="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+        >
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span
+                id="lightboxNumber"
+                class="font-mono text-xs font-semibold tracking-widest text-neutral-400"
+              >
+                01 / 06
+              </span>
+              <span
+                id="lightboxCategory"
+                class="rounded-full border border-white/15 bg-white/10 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/90"
+              >
+                Acara
+              </span>
+            </div>
+            <h3
+              id="lightboxTitle"
+              class="mt-1.5 text-lg font-bold tracking-tight text-white sm:text-xl"
+            >
+              [Judul momen]
+            </h3>
+            <p
+              id="lightboxDesc"
+              class="mt-1 text-xs leading-relaxed text-neutral-400"
+            >
+              [Deskripsi singkat momen kebersamaan angkatan Invictus]
+            </p>
+          </div>
+
+          <div class="flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              id="lightboxPrevBtn"
+              class="flex cursor-pointer items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white hover:text-neutral-950"
+            >
+              <span>&larr;</span>
+              <span>Sebelumnya</span>
+            </button>
+            <button
+              type="button"
+              id="lightboxNextBtn"
+              class="flex cursor-pointer items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white hover:text-neutral-950"
+            >
+              <span>Berikutnya</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
